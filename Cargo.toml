@@ -1,0 +1,11 @@
+[package]
+name = "atomalloc"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+
+[features]
+default = ["no_alloc", "with_alloc"]
+no_alloc = []
+with_alloc = []
