@@ -30,3 +30,35 @@ fn noalloc() {
     assert_eq!(alloc.atoms[0], Some(Atom { start: 1024, frame_count: 64 }));
     assert_eq!(alloc.head, Some(0));
 }
+
+#[test]
+fn noalloc_irl() {
+    let mut alloc: AtomAlloc<1024, 4096> = AtomAlloc::default();
+
+    alloc.add_memory(0x51000, 2);
+    alloc.add_memory(0x54000, 72);
+    alloc.add_memory(0x100000, 259887);
+    alloc.add_memory(0x3f925000, 1);
+    alloc.add_memory(0x3fed3000, 15);
+    
+    let mut first = alloc.allocate(1);
+    if first.is_none() {
+        alloc.defragment();
+        first = alloc.allocate(1);
+    }
+    assert!(first.is_some());
+    
+    let mut second = alloc.allocate(1);
+    if second.is_none() {
+        alloc.defragment();
+        second = alloc.allocate(1);
+    }
+    assert!(second.is_some());
+    
+    let mut third = alloc.allocate(1);
+    if third.is_none() {
+        alloc.defragment();
+        third = alloc.allocate(1);
+    }
+    assert!(third.is_some());
+}

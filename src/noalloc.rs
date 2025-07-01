@@ -58,7 +58,7 @@ impl<const SLOTS: usize, const FRAME_SIZE: usize> AtomAlloc<SLOTS, FRAME_SIZE> {
             } else {
                 // take and subtract head
                 self.head = Some(index - 1);
-                self.atoms[index - 1].take()
+                self.atoms[index].take()
             }
         } else {
             None
